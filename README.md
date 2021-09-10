@@ -1,5 +1,5 @@
 [![Actions Status](https://github.com/alpbsoysal/suorb/workflows/Ubuntu/badge.svg)](https://github.com/alpbsoysal/suorb/actions)
-[![codecov](https://codecov.io/gh/alpbsoysal/suorb/branch/master/graph/badge.svg)](https://codecov.io/gh/alpbsoysal/suorb)
+[![codecov](https://codecov.io/gh/alpbsoysal/suorb/branch/master/graph/badge.svg?token=M5ca3GOmEk)](https://codecov.io/gh/alpbsoysal/suorb)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/alpbsoysal/suorb)](https://github.com/alpbsoysal/suorb/releases)
 
 # suorb
