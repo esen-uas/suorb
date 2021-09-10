@@ -3,3 +3,6 @@ ignore:
 
 comment:
   require_changes: true
+
+codecov:
+  token: 1e3a65ac-f31d-47f0-b91f-367a68ef42f9
