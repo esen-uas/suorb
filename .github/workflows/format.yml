@@ -29,4 +29,4 @@ jobs:
     - name: cpplint
       run: |
         pip install cpplint
-        cpplint --recursive src/ include/ test/
+        cpplint --recursive src include
