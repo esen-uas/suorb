@@ -29,4 +29,8 @@ jobs:
     - name: cpplint
       run: |
         pip install cpplint
-        cpplint --recursive src include
+        cpplint $(find src include -name \*.h* -or -name \*.cpp)
+
+    - name: clang-format
+      run: |
+        clang-format -i $(find src include -name \*.h* -or -name \*.cpp)
