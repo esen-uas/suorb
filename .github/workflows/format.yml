@@ -29,8 +29,8 @@ jobs:
     - name: cpplint
       run: |
         pip install cpplint
-        cpplint $(find src include -name \*.h* -or -name \*.cpp)
+        cpplint $(find src include -name \*.hpp -or -name \*.cpp)
 
     - name: clang-format
       run: |
-        clang-format -i $(find src include -name \*.h* -or -name \*.cpp)
+        clang-format $(find src include -name \*.hpp -or -name \*.cpp)
