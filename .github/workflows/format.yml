@@ -33,4 +33,4 @@ jobs:
 
     - name: clang-format
       run: |
-        clang-format $(find src include -name \*.hpp -or -name \*.cpp)
+        clang-format -i $(find src include -name \*.hpp -or -name \*.cpp)
