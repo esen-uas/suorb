@@ -1,9 +1,10 @@
-#ifndef TMP_TMP_H_
-#define TMP_TMP_H_
+// Copyright 2021 ESEN Sistem Entegrasyon
 
-namespace tmp
-{
+#ifndef INCLUDE_SUORB_TMP_HPP_
+#define INCLUDE_SUORB_TMP_HPP_
+
+namespace tmp {
   int add(int, int);
 }
 
-#endif  // TMP_TMP_H_
+#endif  // INCLUDE_SUORB_TMP_HPP_

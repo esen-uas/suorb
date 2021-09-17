@@ -57,7 +57,8 @@ install: ## install the package to the `INSTALL_LOCATION`
 	cmake --build build --config Release
 	cmake --build build --target install --config Release
 
-format: ## format the project sources
+format: ## run cpplint and format the project sources
 	rm -rf build/
+	cpplint --filter=-readability/nolint $$(find src include -name \*.hpp -or -name \*.cpp)
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
 	cmake --build build --target clang-format
