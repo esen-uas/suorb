@@ -27,4 +27,6 @@ jobs:
         key: ${{ runner.os }}-dependencies
 
     - name: cppcheck
-      run: cppcheck src include
+      run: |
+        apt install cppcheck
+        cppcheck src include
