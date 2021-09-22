@@ -28,5 +28,5 @@ jobs:
 
     - name: cppcheck
       run: |
-        apt install cppcheck
+        sudo apt install cppcheck
         cppcheck src include
