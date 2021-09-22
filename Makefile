@@ -62,3 +62,7 @@ format: ## run cpplint and format the project sources
 	cpplint --filter=-readability/nolint $$(find src include -name \*.hpp -or -name \*.cpp)
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
 	cmake --build build --target clang-format
+
+cppcheck: ## run cppcheck
+	rm -rf build/
+	cppcheck src include
