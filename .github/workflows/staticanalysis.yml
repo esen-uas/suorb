@@ -32,4 +32,5 @@ jobs:
         cppcheck src include
 
     - name: iwyu
+      run: cmake -Bbuild -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE
       uses: EmilGedda/include-what-you-use-action@v1.0
