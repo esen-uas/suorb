@@ -31,6 +31,8 @@ jobs:
         sudo apt install cppcheck
         cppcheck src include
 
-    - name: iwyu
+    - name: export compile commands
       run: cmake -Bbuild -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE
+
+    - name: iwyu
       uses: EmilGedda/include-what-you-use-action@v1.0
