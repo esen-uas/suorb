@@ -30,3 +30,6 @@ jobs:
       run: |
         sudo apt install cppcheck
         cppcheck src include
+
+    - name: iwyu
+        uses: EmilGedda/include-what-you-use-action@v1

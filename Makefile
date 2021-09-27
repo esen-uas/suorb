@@ -66,3 +66,7 @@ format: ## run cpplint and format the project sources
 cppcheck: ## run cppcheck
 	rm -rf build/
 	cppcheck src include
+
+iwyu:
+	rm -rf build/
+	cmake -Bbuild -DCMAKE_CXX_INCLUDE_WHAT_YOU_USE="usr/local/bin/include-what-you-use"
