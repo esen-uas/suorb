@@ -1,6 +1,9 @@
 #include "suorb/tmp.hpp"
 
-#include <gtest/gtest.h>
+#include <gtest/gtest-message.h>    // for Message
+#include <gtest/gtest-test-part.h>  // for TestPartResult
+#include <memory>                   // for allocator
+#include "gtest/gtest_pred_impl.h"  // for Test, AssertionResult, InitGoogle...
 
 TEST(TmpAddTest, CheckValues)
 {
