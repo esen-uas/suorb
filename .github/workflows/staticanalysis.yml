@@ -37,7 +37,7 @@ jobs:
         cmake --build build --target install --config Release
 
     - name: configure
-      run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/$INSTALL_LOCATION -Dsuorb_ENABLE_CODE_COVERAGE=1
+      run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/$INSTALL_LOCATION -Dsuorb_ENABLE_CODE_COVERAGE=1 -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE
 
     - name: build
       run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE --build build --config $BUILD_TYPE -j4
