@@ -32,4 +32,4 @@ jobs:
         cppcheck src include
 
     - name: iwyu
-        uses: EmilGedda/include-what-you-use-action@v1
+      uses: EmilGedda/include-what-you-use-action@v1
