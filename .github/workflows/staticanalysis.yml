@@ -30,3 +30,7 @@ jobs:
       run: |
         sudo apt install cppcheck
         cppcheck src include
+
+    - name: lwyu
+      run: |
+        cmake -Bbuild -DCMAKE_LINK_WHAT_YOU_USE=TRUE
