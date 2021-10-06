@@ -1,4 +1,4 @@
-#include "suorb/tmp.hpp"
+#include "suorb/tmp.h"
 
 #include <gtest/gtest.h>
 

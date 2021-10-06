@@ -1,17 +1,5 @@
-.PHONY: install coverage test docs help
-.DEFAULT_GOAL := help
 
-define BROWSER_PYSCRIPT
-import os, webbrowser, sys
-
-try:
-	from urllib import pathname2url
-except:
-	from urllib.request import pathname2url
-
-webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
-endef
-export BROWSER_PYSCRIPT
+SHELL := /usr/bin/bash
 
 define PRINT_HELP_PYSCRIPT
 import re, sys
@@ -24,49 +12,77 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
-INSTALL_LOCATION := ~/.local
+
+ifneq ($(VERBOSE),)
+CMAKE_VERBOSE=--verbose
+endif
+
+default: test
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+.PHONY: help
 
-test: ## run tests quickly with ctest
-	rm -rf build/
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmodern-cpp-template_ENABLE_UNIT_TESTING=1 -DCMAKE_BUILD_TYPE="Release"
-	cmake --build build --config Release
-	cd build/ && ctest -C Release -VV
+build:
+	cmake -B build $(CMAKE_VERBOSE)
+	cmake --build build $(CMAKE_VERBOSE)
+.PHONY:build
 
-coverage: ## check code coverage quickly GCC
-	rm -rf build/
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmodern-cpp-template_ENABLE_CODE_COVERAGE=1
-	cmake --build build --config Release
-	cd build/ && ctest -C Release -VV
-	cd .. && (bash -c "find . -type f -name '*.gcno' -exec gcov -pb {} +" || true)
+build-clang:
+	cmake -B build $(CMAKE_VERBOSE) -DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/clang-cxx17.cmake .
+	cmake --build build $(CMAKE_VERBOSE)
+.PHONY:build
 
-docs: ## generate Doxygen HTML documentation, including API docs
-	rm -rf docs/
-	rm -rf build/
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -DProject_ENABLE_DOXYGEN=1
-	cmake --build build --config Release
-	cmake --build build --target doxygen-docs
-	$(BROWSER) docs/html/index.html
+test: build
+	cd build &&	ctest $(CMAKE_VERBOSE)
+.PHONY:test
 
-install: ## install the package to the `INSTALL_LOCATION`
-	rm -rf build/
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
-	cmake --build build --config Release
-	cmake --build build --target install --config Release
+coverage-gcc: build
+	cmake $(CMAKE_VERBOSE) -B build  -DENABLE_GCC_COVERAGE=ON .
+	cmake $(CMAKE_VERBOSE) --build build
+	cd build &&	ctest $(CMAKE_VERBOSE)
+	cd build/test/CMakeFiles/suorb_test.dir/src && gcov -jkm *.o
+.PHONY:coverage
 
-format: ## run cpplint and format the project sources
-	rm -rf build/
-	cpplint --filter=-readability/nolint $$(find src include -name \*.hpp -or -name \*.cpp)
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
-	cmake --build build --target clang-format
+docs:
+	mkdir -p build/docs
+	doxygen Doxyfile
+	WARN_COUNT=$(cat build/doxy.err | wc -l)
+	echo "Doxygen warning log size: ${WARN_COUNT}"
+	exit ${WARN_COUNT}
+.PHONY:docs
 
-cppcheck: ## run cppcheck
-	rm -rf build/
+cpplint:
+	cpplint --filter=-readability/nolint $$(find src include -iname \*.h -or -name \*.cc)
+.PHONY:cpplint
+
+clang-format:
+	find src include -iname '*.h' -o -iname '*.cc' | xargs clang-format $(CMAKE_VERBOSE) -i -style=file
+.PHONY:clang-format
+
+format: clang-format
+.PHONY:format
+
+cppcheck:
 	cppcheck src include
+.PHONY:cppcheck
+
+clang-tidy: build
+	find src include -iname '*.h' -o -iname '*.cc' | xargs clang-tidy $(CMAKE_VERBOSE) -p build
+.PHONY:clang-tidy
+
+static-analysis: cppcheck clang-tidy
+.PHONY:static-analysis
 
 lwyu:
+	cmake -B build -DCMAKE_LINK_WHAT_YOU_USE=TRUE
+.PHONY:lwyu
+
+# iwyu:
+# 	cmake -B build -DCMAKE_CXX_INCLUDE_WHAT_YOU_USE="/usr/local/bin/include-what-you-use"
+# 	cmake --build build
+# .PHONY:iwyu
+
+clean:
 	rm -rf build/
-	cmake -Bbuild -DCMAKE_LINK_WHAT_YOU_USE=TRUE
+.PHONY:clean

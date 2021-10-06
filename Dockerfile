@@ -1,52 +1,31 @@
-FROM ubuntu:18.04
+FROM mcr.microsoft.com/vscode/devcontainers/cpp:ubuntu-20.04
 
-RUN echo "Updating Ubuntu"
-RUN apt-get update && apt-get upgrade -y
+# Build dependencies from apt
+RUN set -eux; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update; \
+    apt-get install -y --quiet --no-install-recommends \
+        ccache \
+        clang-format \
+        clang-tidy \
+        doxygen \
+        graphviz \
+        make \
+        ninja-build \
+        python-is-python3 \
+        python3-pip \
+        vim
 
-RUN echo "Installing dependencies..."
-RUN apt install -y \
-			ccache \
-			clang \
-			clang-format \
-			clang-tidy \
-			cppcheck \
-			curl \
-			doxygen \
-			gcc \
-			git \
-			graphviz \
-			make \
-			ninja-build \
-			python3 \
-			python3-pip \
-			tar \
-			unzip \
-			vim
 
-RUN echo "Installing dependencies not found in the package repos..."
+# Build dependencies from pypi
+RUN pip install conan cpplint
 
-RUN apt install -y wget tar build-essential libssl-dev && \
-			wget https://github.com/Kitware/CMake/releases/download/v3.15.0/cmake-3.15.0.tar.gz && \
-			tar -zxvf cmake-3.15.0.tar.gz && \
-			cd cmake-3.15.0 && \
-			./bootstrap && \
-			make && \
-			make install 
 
-RUN pip3 install conan
+# User niceties
+RUN set -eux; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update; \
+    apt-get install -y --quiet --no-install-recommends \
+        bash-completion
 
-RUN git clone https://github.com/catchorg/Catch2.git && \
-		 cd Catch2 && \
-		 cmake -Bbuild -H. -DBUILD_TESTING=OFF && \
-		 cmake --build build/ --target install
-
-# Disabled pthread support for GTest due to linking errors
-RUN git clone https://github.com/google/googletest.git --branch release-1.10.0 && \
-        cd googletest && \
-        cmake -Bbuild -Dgtest_disable_pthreads=1 && \
-        cmake --build build --config Release && \
-        cmake --build build --target install --config Release
-
-RUN git clone https://github.com/microsoft/vcpkg -b 2020.06 && \
-		cd vcpkg && \
-		./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries	
+USER vscode
