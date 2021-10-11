@@ -14,11 +14,40 @@ RUN set -eux; \
         ninja-build \
         python-is-python3 \
         python3-pip \
-        vim
+        vim \
+    ; \
+    apt-get clean autoclean; \
+    apt-get autoremove --yes; \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;
+    # This is a dev container so don't kill pkg management by removıng /var/lib/dpkg etc.
 
 
 # Build dependencies from pypi
 RUN pip install conan cpplint
+
+
+# iwyu needs libclang-dev
+RUN set -eux; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update; \
+    apt-get install -y --quiet --no-install-recommends \
+        libclang-dev \
+    ; \
+    apt-get clean autoclean; \
+    apt-get autoremove --yes; \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;
+    # This is a dev container so don't kill pkg management by removıng /var/lib/dpkg etc.
+
+# iwyu - clang 10 compatible version is 0.14
+RUN set -eux; \
+    cd tmp; \
+    git clone --branch 0.14 \
+        https://github.com/include-what-you-use/include-what-you-use.git \
+        /tmp/iwyu; \
+    mkdir -p /tmp/build; \
+    cmake -B /tmp/build --DCMAKE_PREFIX_PATH=/usr/lib/llvm-10 /tmp/iwyu ; \
+    cmake --build /tmp/build --target install; \
+    rm -rf /tmp/*
 
 
 # User niceties

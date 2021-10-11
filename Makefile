@@ -76,12 +76,13 @@ static-analysis: cppcheck clang-tidy
 
 lwyu:
 	cmake -B build -DCMAKE_LINK_WHAT_YOU_USE=TRUE
+	cmake --build build
 .PHONY:lwyu
 
-# iwyu:
-# 	cmake -B build -DCMAKE_CXX_INCLUDE_WHAT_YOU_USE="/usr/local/bin/include-what-you-use"
-# 	cmake --build build
-# .PHONY:iwyu
+iwyu:
+	cmake -B build -DCMAKE_CXX_INCLUDE_WHAT_YOU_USE="/usr/local/bin/include-what-you-use"
+	cmake --build build
+.PHONY:iwyu
 
 clean:
 	rm -rf build/
