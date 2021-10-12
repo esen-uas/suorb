@@ -5,3 +5,22 @@
 # suorb
 
 uORB is an internal messaging system used by the PX4 Autopilot software. suorb is amied at making a standalone uORB library.
+
+# TODO
+
+from uORB.h:
+orb_advert_t
+
+orb_advertise()
+orb_unadvertise()
+orb_publish()
+orb_subscribe()
+orb_unsubscribe()
+orb_check()
+orb_copy()
+
+from uORB/topics/msg_xxxx.h:
+msg_xxxx_s
+TimeStamp()
+GetTopicId()
+GetMessageRef()
