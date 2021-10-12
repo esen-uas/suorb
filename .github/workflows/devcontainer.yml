@@ -2,10 +2,10 @@ name: Publish Container Image
 
 on:
   push:
-    paths: Dockerfile
+    paths: [ Dockerfile ]
   pull_request:
     branches: [ master ]
-    paths: Dockerfile
+    paths: [ Dockerfile ]
 
 env:
   REGISTRY: ghcr.io
