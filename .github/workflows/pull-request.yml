@@ -1,4 +1,4 @@
-name: Build and Test
+name: Pull Request Checks
 
 on:
   push:
@@ -20,3 +20,12 @@ jobs:
 
       - name: test
         run: make test
+
+      - name: format
+        run: make format
+
+      - name: static-analysis
+        run: make static-analysis
+
+      - name: iwyu
+        run: make iwyu
