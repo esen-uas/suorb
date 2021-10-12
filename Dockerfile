@@ -57,4 +57,3 @@ RUN set -eux; \
     apt-get install -y --quiet --no-install-recommends \
         bash-completion
 
-USER vscode
