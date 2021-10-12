@@ -13,10 +13,18 @@ jobs:
       image: ghcr.io/esen-uas/suorb-dev:latest
 
     steps:
+      - name: configure container
+        run: sudo mkdir /_
+
       - uses: actions/checkout@v2
+        with:
+          path: /home/vscode
 
       - name: build
-        run: make build
+        run: cd /home/vscode && ls -l
+
+      - name: build
+        run: cd /home/vscode/suorb && make build
 
       - name: test
-        run: make test
+        run: cd /home/vscode && make test
