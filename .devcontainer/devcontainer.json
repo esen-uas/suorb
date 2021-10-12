@@ -1,8 +1,10 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.191.1/containers/docker-existing-dockerfile
 {
-	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+	// Comment image or context/dockerfile depending on what you need (usually image is fine)
 	"image": "ghcr.io/esen-uas/suorb-dev:latest",
+	// "context": ".." ,
+	// "dockerFile" : "../Dockerfile",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {},
