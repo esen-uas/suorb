@@ -8,6 +8,7 @@ on:
 
 jobs:
   build_test:
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/esen-uas/suorb-dev:latest
 
