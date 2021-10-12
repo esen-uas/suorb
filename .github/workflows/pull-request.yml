@@ -1,0 +1,31 @@
+name: Pull Request Checks
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/esen-uas/suorb-dev:latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: build
+        run: make build
+
+      - name: test
+        run: make test
+
+      - name: format
+        run: make format
+
+      - name: static-analysis
+        run: make static-analysis
+
+      - name: iwyu
+        run: make iwyu
